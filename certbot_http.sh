@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/env -S bash
 ## Fetch SSL cert using certbot w/no http server
 #
 # Crontab Example:
