@@ -35,6 +35,12 @@ crypto pki import CA_LETSENCRYPT pem terminal password CfZgA2Us0zqQF=zV
 * paste cert.pem
 ```
 
+## WordPress MySQL account restoration
+
+```
+awk -F"'" '/define.*DB/{if($2 == "DB_NAME") {NAME=$4} else if($2 == "DB_USER") {USER=$4} else if($2 == "DB_PASSWORD") {PASS=$4} else if($2 == "DB_HOST") {HOST=$4}}END{print "CREATE USER '\''"USER"'\''@'\''"HOST"'\'' IDENTIFIED BY '\''"PASS"'\'';"; print "GRANT ALL PRIVILEGES ON",NAME".* TO '\''"USER"'\''@'\''"HOST"'\'';"; print "FLUSH PRIVILEGES;"}' wp-config.php
+```
+
 ## Reference
 
 - [Apaxy](https://github.com/oupala/apaxy "Apaxy")
