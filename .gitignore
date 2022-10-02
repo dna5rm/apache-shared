@@ -1,0 +1,14 @@
+# Testing files
+_*.sh
+
+# Certs
+passphrase.txt
+*.pem
+*.pfx
+*.crt
+*.key
+*.csr
+/certs
+
+# Other Random files
+.uuid

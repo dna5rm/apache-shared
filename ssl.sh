@@ -1,12 +1,12 @@
 #!/bin/env -S bash
-## Generate Certificate
+## OpenSSL cmd helper script.
 
 # Enable for debuging
 # set -x
 
 # Script variables
 cert_name=( ${@,,} )
-cert_path="." #"$(dirname "${BASH_SOURCE[0]}:-.")"
+cert_path="$(dirname "${BASH_SOURCE[0]}:-.")/certs"
 
 # Verify script requirements
 for req in openssl tput; do
@@ -68,7 +68,7 @@ tput sgr0
     [[ ! -d "${cert_path}/${cert_name[0]}" ]] && {
         tput sgr0 && boxText "SSL Private Key..."
 
-        mkdir -m 755 "${cert_path}/${cert_name[0]}"
+        mkdir -p -m 755 "${cert_path}/${cert_name[0]}"
 
         # passphrase.txt
         [[ ! -f "${cert_path}/${cert_name[0]}/passphrase.txt" ]] && {
@@ -252,7 +252,7 @@ $(tput sgr 1 1)Usage Scenarios$(tput sgr0):
 
     Append the single domain to the end of the script.
 
-    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null || hostname -f)
+    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null | awk '{print $1}')
 
   $(tput sgr 0 1)SAN Certificate$(tput sgr0):
 
@@ -261,12 +261,12 @@ $(tput sgr 1 1)Usage Scenarios$(tput sgr0):
     The second example will add a wildcard to the SAN certificate.
     Because "*" is a special character make sure you suround it with quotes.
 
-    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null || hostname -f) $(hostname -s | tr 'A-Za-z' 'N-ZA-Mn-za-m').$(hostname -A 2>/dev/null|| hostname -f | sed '/\..*\./s/^[^.]*\.//')
-    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null || hostname -f | sed '/\..*\./s/^[^.]*\.//') "*.$(hostname -A 2>/dev/null || hostname -f | sed '/\..*\./s/^[^.]*\.//')"
+    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null | awk '{print $1}') $(hostname -s | tr 'A-Za-z' 'N-ZA-Mn-za-m').$(hostname -A 2>/dev/null | awk '{print $1}' | sed '/\..*\./s/^[^.]*\.//')
+    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null | awk '{print $1}' | sed '/\..*\./s/^[^.]*\.//') "*.$(hostname -A 2>/dev/null | awk '{print $1}' | sed '/\..*\./s/^[^.]*\.//')"
 
   $(tput sgr 0 1)Wildcard Certificate$(tput sgr0):
 
-    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null || hostname -f | sed '/\..*\./s/^[^.]*\.//')
+    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null | awk '{print $1}' | sed '/\..*\./s/^[^.]*\.//')
 
     When generating the CSR, add a "*." before the "Common Name".
 
@@ -275,8 +275,8 @@ $(tput sgr 1 1)Usage Scenarios$(tput sgr0):
     The script will recreate any missing files at runtime.
     If a certificate is about to expire if you delete the CSR and re-run the script it will rerun the step to create the CSR.
 
-    $ $(tput bold)rm$(tput sgr0) $(echo "${cert_path}/$(hostname -A 2>/dev/null || hostname -f)/request.pem" | tr -d ' ')
-    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null || hostname -f)
+    $ $(tput bold)rm$(tput sgr0) $(echo "${cert_path}/$(hostname -A 2>/dev/null | awk '{print $1}')/request.pem" | tr -d ' ')
+    $ $(tput bold)${0}$(tput sgr0) $(hostname -A 2>/dev/null | awk '{print $1}')
 
   $(tput sgr 0 1)Creating a PFX certificate bundle$(tput sgr0):
 
