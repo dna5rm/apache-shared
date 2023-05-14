@@ -4,7 +4,7 @@
 optdir="/opt/apache-shared"
 
 # Packages to install
-pkgs=($(echo $(tr ' ' '\n' <<< "apache2 apachetop certbot libapache2-mod-php mariadb-server php-geoip php-mysql php-yaml" | sort -u)))
+pkgs=($(echo $(tr ' ' '\n' <<< "apache2 apachetop certbot goaccess libapache2-mod-php mariadb-server php-geoip php-mysql php-yaml" | sort -u)))
 
 # Apache2 conf files
 conf=( "localized-error-pages.conf" )
